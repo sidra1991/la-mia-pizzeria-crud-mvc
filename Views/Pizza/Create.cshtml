@@ -1,0 +1,39 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Pizza;
+
+@{
+    Layout = "_Layout";
+}
+
+
+<form asp-controller="Pizza" asp-action="create" method="post">
+
+      <div class="mb-3">
+            <label for="Immage" class="form-label">Immagine</label>
+            <input asp-for="ImageAddress" class="form-control" aria-describedby="emailHelp" />
+            <span asp-validation-for="ImageAddress" class="text-danger" ></span>
+      </div>
+
+      <div class="mb-3">
+            <label for="Name" class="form-label">Nome</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+      </div>
+
+      <div class="mb-3 form-check">
+            <label for="Price" class="form-label">prezzo</label>
+            <input type="number" asp-for="Price"  />
+            <span asp-validation-for="Price" class="text-danger"></span>
+      </div>
+
+        <div class="mb-3">
+            <label for="Description" class="form-label">Descrizione</label>
+            <textarea asp-for="Description" rows="10" ></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>

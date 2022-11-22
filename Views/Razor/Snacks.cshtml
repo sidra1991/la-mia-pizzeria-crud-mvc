@@ -1,0 +1,120 @@
+﻿
+@{
+    Layout = "_mylayoutSnacks";
+}
+
+<h1> esercitazione a snack </h1>
+
+<div class="container-fluid"> 
+    <div class="container-lg m-2 border border-primary" style=" background-color:aliceblue">
+        <h2 style="color:red" > snack 1 </h2>
+        <p> 1. Dichiarare una variabile valorizzandola con il nostro nome.
+Dichiarare un'altra variabile valorizzandola con il nostro cognome.
+Stampare il nostro nome e cognome all'interno di un tag h2. </p>
+
+        <div style="background-color:aqua">
+            @{
+                string name = "anthony";
+                string surname = "anthony";
+            }
+
+            <h2> @name @surname  </h2>
+
+        </div>
+    </div>
+
+    <div class="container-lg m-2 border border-primary" style=" background-color:aliceblue">
+        <h2 style="color:red" > snack 2 </h2>
+        <p> 2. Creare una funzione che stampa la somma dei numeri che vanno da 1 a n (con n passato come parametro - n incluso)
+              Stampare dentro uno span il risultato. </p>
+
+        <div style="background-color:aqua">
+            @{
+                Random rand = new Random();
+                int n = rand.Next(1, 10);
+                int result = 0;
+
+                for (int i = 1; i < n; i++)
+                {
+                    result += i;
+                }
+
+            }
+            <p> risultato è @result </p>
+
+        </div>
+    </div>
+
+    <div class="container-lg m-2 border border-primary" style=" background-color:aliceblue">
+        <h2 style="color:red" > snack 3 </h2>
+        <p> 3. Contare quante volte la lettera a è presente nalla frase "nel mezzo del cammin di nostra vita" e stampare questo valore in pagina </p>
+
+        <div style="background-color:aqua">
+            @{
+                string text = "nel mezzo del cammin di nostra vita";
+                int ann = 0;
+                foreach (var item in text)
+                {
+                    if(Convert.ToString(item) == "a"){
+                        ann += 1;
+                    }
+                }
+            }
+            <p> la a ricorre @ann volte </p>
+
+
+        </div>
+    </div>
+    
+    <div class="container-lg m-2 border border-primary" style=" background-color:aliceblue">
+        <h2 style="color:red" > snack 4 </h2>
+        <p>4. Creare una List int di 20 numeri interi (generati random da 1 a 90, 1 e 90 inclusi) e mostrare in pagina solo i numeri compresi tra 20 e 70</p>
+
+        <div style="background-color:aqua">
+            @{
+                List<int> numbers = new List<int>();
+                for (int i = 0; i < 20; i++)
+                {
+                    int nRand = rand.Next(1,90);
+                    numbers.Add(nRand);
+
+                    if (nRand > 20 && nRand < 70){
+                                <span> @nRand </span>
+                    }
+                }
+            }
+
+
+        </div>
+    </div>
+
+    <div class="container-lg m-2 border border-primary" style=" background-color:aliceblue">
+        <h2 style="color:red" > snack 5 </h2>
+        <p> 5. Stampare in pagina la data e l'ora attuale (usando la classe DateTime) con il formato anno-mese-giorno ore:minuti:secondi </p>
+
+        <div style="background-color:aqua">
+            @{
+                DateTime date =  DateTime.Now;
+            }
+            <p> @date.ToString("d"); </p>
+
+        </div>
+    </div>
+
+        <div class="container-lg m-2 border border-primary" style=" background-color:aliceblue">
+        <h2 style="color:red" > snack 6 </h2>
+        <p> 6. Partendo dalla data di oggi (usando la classe DateTime) stampare in pagina <br/>   
+            a. la data di 7 giorni fa<br/> 
+            b. che giorno della settimana è oggi (il risultato dovrà essere il nome del giorno (Lunedì, Martedì, ...)<br/> 
+            c. che giorno della settimana sarà nello stesso giorno e mese di oggi ma tra un anno (il risultato dovrà essere il nome del giorno (Lunedì, Martedì, ...) </p>
+
+        <div style="background-color:aqua">
+            <p> 7 giorni fa era  @date.AddDays(-7)  </p>
+            <p> oggi è @date.DayOfWeek.ToString() </p>
+            <p> tra un anno sarà @date.AddYears(1).DayOfWeek.ToString() </p>
+
+        </div>
+    </div>
+
+    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+</div>
