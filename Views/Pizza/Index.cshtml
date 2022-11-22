@@ -28,8 +28,18 @@
 
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">prezzo @item.Price € </li>
-                     <li class="list-group-item"> <a class=" text-dark" href="@Url.Action("Show",new {id = item.Id})" >dettagli pizza</a> </li>
+                    <li class="list-group-item"> <a class=" text-dark" href="@Url.Action("Show",new {id = item.Id})" >dettagli pizza</a> </li>
                 </ul>
+                       
+                <div class="row">
+                    <button class="btn btn-success"  style=" width:50%;">
+                            <a href="@Url.Action("Update",new {id = item.Id})"> Modifica </a>
+                    </button>
+
+                    <button class="btn btn-danger" href="@Url.Action("Update",new {id = item.Id})"  style=" width:50%;">
+                             <a href="@Url.Action("Delete",new {id = item.Id})"> elimina </a>
+                    </button>
+               </div>
 
             </div>
         }

@@ -1,6 +1,7 @@
 ﻿using la_mia_pizzeria_static.data;
 using la_mia_pizzeria_static.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 
 namespace la_mia_pizzeria_static.Controllers
@@ -8,20 +9,25 @@ namespace la_mia_pizzeria_static.Controllers
     public class PizzaController : Controller
     {
 
+        PizzaDB db;
+
+        public PizzaController() : base()
+        {
+            db = new PizzaDB();
+        }
+
+
         public IActionResult Index()
         {
-            PizzaDB pi = new PizzaDB();
-
-            List<Pizza> pizzaList = pi.pizze.ToList();
+            List<Pizza> pizzaList = db.pizze.ToList();
 
             return View("Index", pizzaList);
         }
 
         public IActionResult Show(int id)
         {
-            PizzaDB pi = new PizzaDB();
 
-            Pizza pizza = pi.pizze.Where(p => p.Id == id).FirstOrDefault();
+            Pizza pizza = db.pizze.Where(p => p.Id == id).FirstOrDefault();
 
             return View(pizza);
         }
@@ -35,18 +41,73 @@ namespace la_mia_pizzeria_static.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Pizza pizza)
         {
-            PizzaDB pi = new PizzaDB();
-
             if (!ModelState.IsValid)
             {
                 return View();
             }
 
 
-            pi.pizze.Add(pizza);
-            pi.SaveChanges();
+            db.pizze.Add(pizza);
+            db.SaveChanges();
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult Update(int id)
+        {
+            Pizza pizza = db.pizze.Where(Pizza => Pizza.Id == id).FirstOrDefault();
+
+            if (pizza == null)
+                return NotFound();
+
+
+            return View("Update", pizza );
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(int id, Pizza formData)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            Pizza pizza = db.pizze.Where(post => post.Id == id).FirstOrDefault();
+
+            if (pizza == null)
+            {
+                return NotFound();
+            }
+
+            pizza.Name = formData.Name;
+            pizza.Description = formData.Description;
+            pizza.ImageAddress = formData.ImageAddress;
+            pizza.Price = formData.Price;
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            Pizza pizza = db.pizze.Where(post => post.Id == id).FirstOrDefault();
+
+            if (pizza == null)
+            {
+                return NotFound();
+            }
+
+            db.pizze.Remove(pizza);
+            db.SaveChanges();
+
+
+            return RedirectToAction("Index");
+        }
+
     }
 }
