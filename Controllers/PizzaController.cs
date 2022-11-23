@@ -95,7 +95,7 @@ namespace la_mia_pizzeria_static.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            Pizza pizza = db.pizze.Where(post => post.Id == id).FirstOrDefault();
+            Pizza pizza = db.pizze.Where(piz => piz.Id == id).FirstOrDefault();
 
             if (pizza == null)
             {
