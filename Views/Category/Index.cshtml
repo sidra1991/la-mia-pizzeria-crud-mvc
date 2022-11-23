@@ -16,7 +16,10 @@
                 elimina 
         </button>
     </form>
-    <form asp-controller="Category" asp-action="Upload" asp-route-id="@item.Id" method="post">
+        <form asp-controller="Category" asp-action="Update" asp-route-id="@item.Id" method="post">
+        <label for="Name"> inserire categoria </label>
+        <input type="text" name="Name" />
+
         <button class="btn btn-sucess" type="submit"  style=" width:50%;">
                 modifica 
         </button>

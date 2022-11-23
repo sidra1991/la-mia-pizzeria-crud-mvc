@@ -48,35 +48,35 @@ namespace la_mia_pizzeria_static.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Update(int id)
-        {
-            Category category = db.categoryes.Where(categor => categor.Id == id).FirstOrDefault();
+        //public IActionResult Update(int id)
+        //{
+        //    Category category = db.categoryes.Where(categor => categor.Id == id).FirstOrDefault();
 
-            if (category == null)
-                return NotFound();
+        //    if (category == null)
+        //        return NotFound();
 
 
-            return View("Update", category);
-        }
+        //    return ActionResult("Update", category);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(int id, Pizza formData)
+        public IActionResult Update(int id, Category category)
         {
 
             if (!ModelState.IsValid)
             {
-                return View();
+                return View("Index");
             }
 
-            Category category = db.categoryes.Where(post => post.Id == id).FirstOrDefault();
+            Category Newcategory = db.categoryes.Where(post => post.Id == id).FirstOrDefault();
 
             if (category == null)
             {
                 return NotFound();
             }
 
-            category.Name = formData.Name;
+            Newcategory.Name = category.Name;
 
 
             db.SaveChanges();
