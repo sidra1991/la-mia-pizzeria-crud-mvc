@@ -21,9 +21,17 @@ namespace la_mia_pizzeria_static.Controllers
 
         public IActionResult Index()
         {
-            List<Pizza> pizzaList = db.pizze.ToList();
-
-            return View("Index", pizzaList);
+            if(db.pizze.ToList().Count > 0) {
+                List<Pizza> pizzaList = db.pizze.ToList();
+                return View("Index", pizzaList);
+            }
+            else
+            {
+                List<Pizza> pizzaList = new List<Pizza>();
+                return View("Index", pizzaList);
+            }
+            
+            
         }
 
         public IActionResult Show(int id)
@@ -54,7 +62,7 @@ namespace la_mia_pizzeria_static.Controllers
             }
 
             Pizza pizza = PiCa.Pizza;
-
+            pizza.Category = db.categoryes.Where(category => category.Id == pizza.CategorId).FirstOrDefault();
             db.pizze.Add(pizza);
             db.SaveChanges();
 

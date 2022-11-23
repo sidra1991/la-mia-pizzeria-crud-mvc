@@ -8,7 +8,7 @@ namespace la_mia_pizzeria_static.Models
         
         public int Id { get; set; }
         [Required (ErrorMessage ="campo obbligatorio")]
-        [ExistValidationsCustom]
+        //[ExistValidationsCustom]
         public string Name { get; set; }
         
         List<Pizza> Pizzas { get; set; }

@@ -19,7 +19,7 @@ namespace la_mia_pizzeria_static.Validations
                 return new ValidationResult(" questa categoria esiste gia ");
             }
 
-            return base.IsValid(value, validationContext);
+            return base.IsValid(value, validationContext: validationContext);
         }
 
     }
