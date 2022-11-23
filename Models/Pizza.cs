@@ -21,16 +21,17 @@ namespace la_mia_pizzeria_static.Models
         [Required(ErrorMessage = "Il campo è obbligatorio")]
         [Range(1, 10, ErrorMessage = "il prezzo non è valido")]
         public int Price { get; set; }
-
+        [Required(ErrorMessage = "Il campo è obbligatorio")]
         public int CategorId { get; set; }
-        Category category { get; set; }
+        Category? Category { get; set; }
 
         public Pizza()
         {
 
         }
-        public Pizza(string name, string imageAddress, string description, int price)
+        public Pizza(string name, string imageAddress, string description, int price, int CategoryId)
         {
+            CategorId = CategoryId;
             Name = name;
             ImageAddress = imageAddress;
             Description = description;

@@ -2,7 +2,7 @@
 {
     public class FormPizzaCategory
     {
-        public int PizzaID { get; set; }
-        public int CategoryID { get; set; }
+        public Pizza Pizza { get; set; }
+        public List<Category>? categories { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using la_mia_pizzeria_static.data;
 using la_mia_pizzeria_static.Models;
+using la_mia_pizzeria_static.Models.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.SqlServer.Server;
 
 namespace la_mia_pizzeria_static.Controllers
 {
@@ -34,18 +36,24 @@ namespace la_mia_pizzeria_static.Controllers
 
         public IActionResult Create()
         {
-            return View("Create");
+            FormPizzaCategory forms = new FormPizzaCategory();  
+            forms.Pizza = new Pizza();
+            forms.categories = db.categoryes.ToList();
+
+            return View("Create",forms);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Pizza pizza)
+        public IActionResult Create(FormPizzaCategory PiCa)
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                PiCa.categories = db.categoryes.ToList();
+                return View(PiCa);
             }
 
+            Pizza pizza = PiCa.Pizza;
 
             db.pizze.Add(pizza);
             db.SaveChanges();
