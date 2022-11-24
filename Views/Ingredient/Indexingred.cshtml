@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+
+}
+@model List<ingredient>
+
+@foreach (var item in Model)
+{
+
+    <p> @item.Name </p>
+
+    <form asp-controller="Ingredient" asp-action="Delete" asp-route-id="@item.Id" method="post">
+        <button class="btn btn-danger" type="submit" style=" width:50%;">
+            elimina
+        </button>
+    </form>
+    <form asp-controller="Ingredient" asp-action="Update" asp-route-id="@item.Id" method="post">
+        <label for="Name"> inserire ingrediente </label>
+        <input type="text" name="Name" />
+
+        <button class="btn btn-sucess" type="submit" style=" width:50%;">
+            modifica
+        </button>
+    </form>
+
+    }
+
+}
+
+
+<form asp-controller="Ingredient" asp-action="create" method="post">
+    <label for="Name"> inserire ingrediente </label>
+    <input type="text" name="Name" />
+
+    <button class="btn btn-primary" type="submit" style=" width:50%;">
+        crea nuovo
+    </button>
+</form>
