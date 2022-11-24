@@ -1,11 +1,14 @@
-﻿using la_mia_pizzeria_static.data;
+﻿using Azure;
+using la_mia_pizzeria_static.data;
 using la_mia_pizzeria_static.Models;
 using la_mia_pizzeria_static.Models.Forms;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.SqlServer.Server;
+using Ingredient = la_mia_pizzeria_static.Models.Ingredient;
 
 namespace la_mia_pizzeria_static.Controllers
 {
@@ -48,22 +51,50 @@ namespace la_mia_pizzeria_static.Controllers
             PizzaForm forms = new PizzaForm();  
             forms.Pizza = new Pizza();
             forms.categories = db.categoryes.ToList();
+            forms.ingredients = new List<SelectListItem>();
+
+
+            List<Ingredient> ingredients = db.ingredientes.ToList();
+
+            foreach (Ingredient ingr in ingredients)
+            {
+                forms.ingredients.Add(new SelectListItem(ingr.Name, ingr.Id.ToString()));
+            }
+
+
 
             return View("Create",forms);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(PizzaForm PiCa)
+        public IActionResult Create(PizzaForm forms)
         {
             if (!ModelState.IsValid)
             {
-                PiCa.categories = db.categoryes.ToList();
-                return View(PiCa);
+                forms.categories = db.categoryes.ToList();
+                forms.ingredients = new List<SelectListItem>();
+
+                List<Ingredient> tagList = db.ingredientes.ToList();
+
+                foreach (Ingredient tag in tagList)
+                {
+                    forms.ingredients.Add(new SelectListItem(tag.Name, tag.Id.ToString()));
+                }
+
+                return View(forms);
+            }
+
+            forms.Pizza.ingredients = new List<Ingredient>();
+
+            foreach (int tagId in forms.selectIngredient)
+            {
+                Ingredient ingredient = db.ingredientes.Where(t => t.Id == tagId).FirstOrDefault();
+                forms.Pizza.ingredients.Add(ingredient);
             }
 
 
-            db.pizze.Add(PiCa.Pizza);
+            db.pizze.Add(forms.Pizza);
             db.SaveChanges();
 
             return RedirectToAction("Index");

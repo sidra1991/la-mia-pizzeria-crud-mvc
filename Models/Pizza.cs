@@ -23,7 +23,7 @@ namespace la_mia_pizzeria_static.Models
         public int Price { get; set; }
         [Required(ErrorMessage = "Il campo è obbligatorio")]
 
-        public List<ingredient> ingredients { get; set; }
+        public List<Ingredient> ingredients { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 

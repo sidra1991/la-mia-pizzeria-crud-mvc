@@ -11,17 +11,27 @@
 
 <form asp-controller="Pizza" asp-action="create" method="post">
 
-    <select asp-for="Pizza.CategoryId" rows="10">
-        @foreach (Category category in Model.categories)
-        {
-            if(index > 1 ){
+        <select asp-for="Pizza.CategoryId" rows="10">
+            @foreach (Category category in Model.categories)
+            {
+                if(index > 1 ){
 
-                <option value="@category.Id">@category.Name</option>
+                    <option value="@category.Id">@category.Name</option>
+                }
+                index++;
             }
-            index++;
-        }
-    </select>
+        </select>
 
+
+        <div class="mb-3">
+            <select asp-for="selectIngredient"
+                    asp-items="@Model.ingredients"
+                    multiple="multiple"
+                    size="10"
+                    class="form-control mb-2 mr-sm-2 ml-sm-3 leftList">
+            </select>
+
+        </div>
 
         <div class="mb-3">
             <label for="Immage" class="form-label">Immagine</label>

@@ -15,12 +15,12 @@ namespace la_mia_pizzeria_static.Controllers
         {
             if (db.ingredientes.ToList().Count > 0)
             {
-                List<ingredient> ingredients = db.ingredientes.ToList();
+                List<Ingredient> ingredients = db.ingredientes.ToList();
                 return View("Indexingred", ingredients);
             }
             else
             {
-                List<ingredient> ingredients = new List<ingredient>();
+                List<Ingredient> ingredients = new List<Ingredient>();
                 return View("Indexingred", ingredients);
             }
         }
@@ -33,14 +33,14 @@ namespace la_mia_pizzeria_static.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ingredient ingredients)
+        public IActionResult Create(Ingredient ingredients)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
 
-            ingredient Newingredients = ingredients;
+            Ingredient Newingredients = ingredients;
 
             db.ingredientes.Add(Newingredients);
             db.SaveChanges();
@@ -51,7 +51,7 @@ namespace la_mia_pizzeria_static.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(int id, ingredient ingredients)
+        public IActionResult Update(int id, Ingredient ingredients)
         {
 
             if (!ModelState.IsValid)
@@ -59,7 +59,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return View("Indexingred");
             }
 
-            ingredient Newingredients = db.ingredientes.Where(ing => ing.Id == id).FirstOrDefault();
+            Ingredient Newingredients = db.ingredientes.Where(ing => ing.Id == id).FirstOrDefault();
 
             if (ingredients == null)
             {
@@ -78,7 +78,7 @@ namespace la_mia_pizzeria_static.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            ingredient ingredients = db.ingredientes.Where(cat => cat.Id == id).FirstOrDefault();
+            Ingredient ingredients = db.ingredientes.Where(cat => cat.Id == id).FirstOrDefault();
 
             if (ingredients == null)
             {
