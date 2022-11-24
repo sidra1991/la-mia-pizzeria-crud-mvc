@@ -11,8 +11,8 @@ using la_mia_pizzeria_static.data;
 namespace lamiapizzeriastatic.Migrations
 {
     [DbContext(typeof(PizzaDB))]
-    [Migration("20221124160752_first")]
-    partial class first
+    [Migration("20221124185322_test2")]
+    partial class test2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,15 +26,15 @@ namespace lamiapizzeriastatic.Migrations
 
             modelBuilder.Entity("IngredientPizza", b =>
                 {
+                    b.Property<int>("IngredientsId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PizzasId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ingredientsId")
-                        .HasColumnType("int");
+                    b.HasKey("IngredientsId", "PizzasId");
 
-                    b.HasKey("PizzasId", "ingredientsId");
-
-                    b.HasIndex("ingredientsId");
+                    b.HasIndex("PizzasId");
 
                     b.ToTable("IngredientPizza");
                 });
@@ -53,7 +53,7 @@ namespace lamiapizzeriastatic.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("categoryes");
+                    b.ToTable("Categoryes");
                 });
 
             modelBuilder.Entity("la_mia_pizzeria_static.Models.Ingredient", b =>
@@ -70,7 +70,7 @@ namespace lamiapizzeriastatic.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ingredientes");
+                    b.ToTable("Ingredientes");
                 });
 
             modelBuilder.Entity("la_mia_pizzeria_static.Models.Pizza", b =>
@@ -104,20 +104,20 @@ namespace lamiapizzeriastatic.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("pizze");
+                    b.ToTable("Pizze");
                 });
 
             modelBuilder.Entity("IngredientPizza", b =>
                 {
-                    b.HasOne("la_mia_pizzeria_static.Models.Pizza", null)
+                    b.HasOne("la_mia_pizzeria_static.Models.Ingredient", null)
                         .WithMany()
-                        .HasForeignKey("PizzasId")
+                        .HasForeignKey("IngredientsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("la_mia_pizzeria_static.Models.Ingredient", null)
+                    b.HasOne("la_mia_pizzeria_static.Models.Pizza", null)
                         .WithMany()
-                        .HasForeignKey("ingredientsId")
+                        .HasForeignKey("PizzasId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -13,9 +13,9 @@ namespace la_mia_pizzeria_static.Controllers
         }
         public IActionResult Index()
         {
-            if (db.categoryes.ToList().Count > 0)
+            if (db.Categoryes.ToList().Count > 0)
             {
-                List<Category> categoryes = db.categoryes.ToList();
+                List<Category> categoryes = db.Categoryes.ToList();
                 return View("Index", categoryes);
             }
             else
@@ -42,7 +42,7 @@ namespace la_mia_pizzeria_static.Controllers
 
             Category NewCategory = category;
 
-            db.categoryes.Add(NewCategory);
+            db.Categoryes.Add(NewCategory);
             db.SaveChanges();
 
             return RedirectToAction("Index");
@@ -50,7 +50,7 @@ namespace la_mia_pizzeria_static.Controllers
 
         //public IActionResult Update(int id)
         //{
-        //    Category category = db.categoryes.Where(categor => categor.Id == id).FirstOrDefault();
+        //    Category category = db.Categoryes.Where(categor => categor.Id == id).FirstOrDefault();
 
         //    if (category == null)
         //        return NotFound();
@@ -69,7 +69,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return View("Index");
             }
 
-            Category Newcategory = db.categoryes.Where(post => post.Id == id).FirstOrDefault();
+            Category Newcategory = db.Categoryes.Where(post => post.Id == id).FirstOrDefault();
 
             if (category == null)
             {
@@ -88,14 +88,14 @@ namespace la_mia_pizzeria_static.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            Category category = db.categoryes.Where(cat => cat.Id == id).FirstOrDefault();
+            Category category = db.Categoryes.Where(cat => cat.Id == id).FirstOrDefault();
 
             if (category == null)
             {
                 return NotFound();
             }
 
-            db.categoryes.Remove(category);
+            db.Categoryes.Remove(category);
             db.SaveChanges();
 
 

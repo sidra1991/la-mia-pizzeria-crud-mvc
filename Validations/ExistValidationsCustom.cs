@@ -12,7 +12,7 @@ namespace la_mia_pizzeria_static.Validations
         {
             PizzaDB db = new PizzaDB();
 
-            Category? category = db.categoryes.Where(cat => cat.Name == value).FirstOrDefault();
+            Category? category = db.Categoryes.Where(cat => cat.Name == value).FirstOrDefault();
 
             if ( category != null )
             {

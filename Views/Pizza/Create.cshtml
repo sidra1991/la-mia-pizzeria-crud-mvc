@@ -12,7 +12,7 @@
 <form asp-controller="Pizza" asp-action="create" method="post">
 
         <select asp-for="Pizza.CategoryId" rows="10">
-            @foreach (Category category in Model.categories)
+            @foreach (Category category in Model.Categories)
             {
                 if(index > 1 ){
 
@@ -24,11 +24,12 @@
 
 
         <div class="mb-3">
-            <select asp-for="selectIngredient"
-                    asp-items="@Model.ingredients"
-                    multiple="multiple"
-                    size="10"
-                    class="form-control mb-2 mr-sm-2 ml-sm-3 leftList">
+            <select asp-for="SelectIngredient" multiple="multiple" size="10" class="form-control mb-2 mr-sm-2 ml-sm-3 leftList">
+                    @foreach (var item in Model.Ingredients)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+
             </select>
 
         </div>

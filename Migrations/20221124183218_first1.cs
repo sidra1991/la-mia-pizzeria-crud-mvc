@@ -5,13 +5,13 @@
 namespace lamiapizzeriastatic.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class first1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "categoryes",
+                name: "Categoryes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -20,11 +20,11 @@ namespace lamiapizzeriastatic.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_categoryes", x => x.Id);
+                    table.PrimaryKey("PK_Categoryes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ingredientes",
+                name: "Ingredientes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -33,11 +33,11 @@ namespace lamiapizzeriastatic.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ingredientes", x => x.Id);
+                    table.PrimaryKey("PK_Ingredientes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "pizze",
+                name: "Pizze",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -50,11 +50,11 @@ namespace lamiapizzeriastatic.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_pizze", x => x.Id);
+                    table.PrimaryKey("PK_Pizze", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_pizze_categoryes_CategoryId",
+                        name: "FK_Pizze_Categoryes_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "categoryes",
+                        principalTable: "Categoryes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -63,34 +63,34 @@ namespace lamiapizzeriastatic.Migrations
                 name: "IngredientPizza",
                 columns: table => new
                 {
-                    PizzasId = table.Column<int>(type: "int", nullable: false),
-                    ingredientsId = table.Column<int>(type: "int", nullable: false)
+                    IngredientsId = table.Column<int>(type: "int", nullable: false),
+                    PizzasId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IngredientPizza", x => new { x.PizzasId, x.ingredientsId });
+                    table.PrimaryKey("PK_IngredientPizza", x => new { x.IngredientsId, x.PizzasId });
                     table.ForeignKey(
-                        name: "FK_IngredientPizza_ingredientes_ingredientsId",
-                        column: x => x.ingredientsId,
-                        principalTable: "ingredientes",
+                        name: "FK_IngredientPizza_Ingredientes_IngredientsId",
+                        column: x => x.IngredientsId,
+                        principalTable: "Ingredientes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_IngredientPizza_pizze_PizzasId",
+                        name: "FK_IngredientPizza_Pizze_PizzasId",
                         column: x => x.PizzasId,
-                        principalTable: "pizze",
+                        principalTable: "Pizze",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_IngredientPizza_ingredientsId",
+                name: "IX_IngredientPizza_PizzasId",
                 table: "IngredientPizza",
-                column: "ingredientsId");
+                column: "PizzasId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_pizze_CategoryId",
-                table: "pizze",
+                name: "IX_Pizze_CategoryId",
+                table: "Pizze",
                 column: "CategoryId");
         }
 
@@ -101,13 +101,13 @@ namespace lamiapizzeriastatic.Migrations
                 name: "IngredientPizza");
 
             migrationBuilder.DropTable(
-                name: "ingredientes");
+                name: "Ingredientes");
 
             migrationBuilder.DropTable(
-                name: "pizze");
+                name: "Pizze");
 
             migrationBuilder.DropTable(
-                name: "categoryes");
+                name: "Categoryes");
         }
     }
 }

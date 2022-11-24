@@ -25,8 +25,8 @@ namespace la_mia_pizzeria_static.Controllers
 
         public IActionResult Index()
         {
-            if(db.pizze.ToList().Count > 0) {
-                List<Pizza> pizzaList = db.pizze.ToList();
+            if(db.Pizze.ToList().Count > 0) {
+                List<Pizza> pizzaList = db.Pizze.ToList();
                 return View("Index", pizzaList);
             }
             else
@@ -41,7 +41,7 @@ namespace la_mia_pizzeria_static.Controllers
         public IActionResult Show(int id)
         {
 
-            Pizza pizza = db.pizze.Where(p => p.Id == id).FirstOrDefault();
+            Pizza pizza = db.Pizze.Where(p => p.Id == id).FirstOrDefault();
 
             return View(pizza);
         }
@@ -50,16 +50,18 @@ namespace la_mia_pizzeria_static.Controllers
         {
             PizzaForm forms = new PizzaForm();  
             forms.Pizza = new Pizza();
-            forms.categories = db.categoryes.ToList();
-            forms.ingredients = new List<SelectListItem>();
+            forms.Categories = db.Categoryes.ToList();
+            forms.Ingredients = db.Ingredientes.ToList();
+            //forms.Ingredients = new List<SelectListItem>();
 
 
-            List<Ingredient> ingredients = db.ingredientes.ToList();
+            //List<Ingredient> Ingredients = db.Ingredientes.ToList();
 
-            foreach (Ingredient ingr in ingredients)
-            {
-                forms.ingredients.Add(new SelectListItem(ingr.Name, ingr.Id.ToString()));
-            }
+            //foreach (Ingredient ingr in Ingredients)
+            //{
+            //    Ingredient ingredient = (Ingredient)db.Ingredientes.Where(i => i.Id == ingr.Id);
+            //    forms.Ingredients.Add(ingredient);
+            //}
 
 
 
@@ -72,29 +74,30 @@ namespace la_mia_pizzeria_static.Controllers
         {
             if (!ModelState.IsValid)
             {
-                forms.categories = db.categoryes.ToList();
-                forms.ingredients = new List<SelectListItem>();
+                forms.Categories = db.Categoryes.ToList();
+                forms.Ingredients = new List<Ingredient>();
 
-                List<Ingredient> tagList = db.ingredientes.ToList();
+                List<Ingredient> Ingredients = db.Ingredientes.ToList();
 
-                foreach (Ingredient tag in tagList)
+                foreach (Ingredient ingr in Ingredients)
                 {
-                    forms.ingredients.Add(new SelectListItem(tag.Name, tag.Id.ToString()));
+                    Ingredient ingredient = db.Ingredientes.Where(i => i.Id == ingr.Id).FirstOrDefault();
+                    forms.Ingredients.Add(ingredient);
                 }
 
                 return View(forms);
             }
 
-            forms.Pizza.ingredients = new List<Ingredient>();
+            forms.Pizza.Ingredients = new List<Ingredient>();
 
-            foreach (int tagId in forms.selectIngredient)
+            foreach (int ing in forms.SelectIngredient)
             {
-                Ingredient ingredient = db.ingredientes.Where(t => t.Id == tagId).FirstOrDefault();
-                forms.Pizza.ingredients.Add(ingredient);
+                Ingredient ingred = db.Ingredientes.Where(i => i.Id == ing).FirstOrDefault();
+                forms.Pizza.Ingredients.Add(ingred);
             }
 
 
-            db.pizze.Add(forms.Pizza);
+            db.Pizze.Add(forms.Pizza);
             db.SaveChanges();
 
             return RedirectToAction("Index");
@@ -102,7 +105,7 @@ namespace la_mia_pizzeria_static.Controllers
 
         public IActionResult Update(int id)
         {
-            Pizza pizza = db.pizze.Where(Pizza => Pizza.Id == id).FirstOrDefault();
+            Pizza pizza = db.Pizze.Where(Pizza => Pizza.Id == id).FirstOrDefault();
 
             if (pizza == null)
                 return NotFound();
@@ -121,7 +124,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return View();
             }
 
-            Pizza pizza = db.pizze.Where(post => post.Id == id).Include("Category").FirstOrDefault();
+            Pizza pizza = db.Pizze.Where(post => post.Id == id).Include("Category").FirstOrDefault();
 
             if (pizza == null)
             {
@@ -142,14 +145,14 @@ namespace la_mia_pizzeria_static.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            Pizza pizza = db.pizze.Where(piz => piz.Id == id).FirstOrDefault();
+            Pizza pizza = db.Pizze.Where(piz => piz.Id == id).FirstOrDefault();
 
             if (pizza == null)
             {
                 return NotFound();
             }
 
-            db.pizze.Remove(pizza);
+            db.Pizze.Remove(pizza);
             db.SaveChanges();
 
 

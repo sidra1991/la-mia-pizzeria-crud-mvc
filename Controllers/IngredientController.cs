@@ -13,9 +13,9 @@ namespace la_mia_pizzeria_static.Controllers
         }
         public IActionResult Indexingred()
         {
-            if (db.ingredientes.ToList().Count > 0)
+            if (db.Ingredientes.ToList().Count > 0)
             {
-                List<Ingredient> ingredients = db.ingredientes.ToList();
+                List<Ingredient> ingredients = db.Ingredientes.ToList();
                 return View("Indexingred", ingredients);
             }
             else
@@ -42,7 +42,7 @@ namespace la_mia_pizzeria_static.Controllers
 
             Ingredient Newingredients = ingredients;
 
-            db.ingredientes.Add(Newingredients);
+            db.Ingredientes.Add(Newingredients);
             db.SaveChanges();
 
             return RedirectToAction("Indexingred");
@@ -59,7 +59,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return View("Indexingred");
             }
 
-            Ingredient Newingredients = db.ingredientes.Where(ing => ing.Id == id).FirstOrDefault();
+            Ingredient Newingredients = db.Ingredientes.Where(ing => ing.Id == id).FirstOrDefault();
 
             if (ingredients == null)
             {
@@ -78,14 +78,14 @@ namespace la_mia_pizzeria_static.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            Ingredient ingredients = db.ingredientes.Where(cat => cat.Id == id).FirstOrDefault();
+            Ingredient ingredients = db.Ingredientes.Where(cat => cat.Id == id).FirstOrDefault();
 
             if (ingredients == null)
             {
                 return NotFound();
             }
 
-            db.ingredientes.Remove(ingredients);
+            db.Ingredientes.Remove(ingredients);
             db.SaveChanges();
 
 
