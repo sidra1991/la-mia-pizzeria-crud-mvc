@@ -1,6 +1,6 @@
 ﻿namespace la_mia_pizzeria_static.Models
 {
-    public class Ingrediente
+    public class ingredient
     {
         public int Id { get; set; }
         public string Name { get; set; }

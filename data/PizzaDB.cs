@@ -8,6 +8,8 @@ namespace la_mia_pizzeria_static.data
     {
         public DbSet<Pizza>pizze { get; set; }
         public DbSet<Category>categoryes { get; set; }
+
+        public DbSet<ingredient> ingredientes { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=ultimatumPizza;Integrated Security=True;Encrypt=false;");

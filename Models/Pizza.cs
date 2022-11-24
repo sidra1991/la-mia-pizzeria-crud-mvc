@@ -22,6 +22,8 @@ namespace la_mia_pizzeria_static.Models
         [Range(1, 10, ErrorMessage = "il prezzo non è valido")]
         public int Price { get; set; }
         [Required(ErrorMessage = "Il campo è obbligatorio")]
+
+        public List<ingredient> ingredients { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 

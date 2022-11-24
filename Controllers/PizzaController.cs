@@ -45,7 +45,7 @@ namespace la_mia_pizzeria_static.Controllers
 
         public IActionResult Create()
         {
-            FormPizzaCategory forms = new FormPizzaCategory();  
+            PizzaForm forms = new PizzaForm();  
             forms.Pizza = new Pizza();
             forms.categories = db.categoryes.ToList();
 
@@ -54,7 +54,7 @@ namespace la_mia_pizzeria_static.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(FormPizzaCategory PiCa)
+        public IActionResult Create(PizzaForm PiCa)
         {
             if (!ModelState.IsValid)
             {
