@@ -3,27 +3,34 @@
 *@
 @{
     Layout = "_Layout";
+    int index = 1;
 
 }
 @model List<Category>
 
 @foreach (var item in Model)
 {
-    <p> @item.Name </p>
+    if(index> 1){
 
-    <form asp-controller="Category" asp-action="Delete" asp-route-id="@item.Id" method="post">
-        <button class="btn btn-danger" type="submit"  style=" width:50%;">
-                elimina 
-        </button>
-    </form>
+        <p> @item.Name </p>
+
+        <form asp-controller="Category" asp-action="Delete" asp-route-id="@item.Id" method="post">
+            <button class="btn btn-danger" type="submit" style=" width:50%;">
+                elimina
+            </button>
+        </form>
         <form asp-controller="Category" asp-action="Update" asp-route-id="@item.Id" method="post">
-        <label for="Name"> inserire categoria </label>
-        <input type="text" name="Name" />
+            <label for="Name"> inserire categoria </label>
+            <input type="text" name="Name" />
 
-        <button class="btn btn-sucess" type="submit"  style=" width:50%;">
-                modifica 
-        </button>
-    </form>
+            <button class="btn btn-sucess" type="submit" style=" width:50%;">
+                modifica
+            </button>
+        </form>
+        index++;
+
+    }
+
 }
 
 

@@ -11,8 +11,8 @@ using la_mia_pizzeria_static.data;
 namespace lamiapizzeriastatic.Migrations
 {
     [DbContext(typeof(PizzaDB))]
-    [Migration("20221123125912_category2")]
-    partial class category2
+    [Migration("20221123192722_firstReload")]
+    partial class firstReload
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,23 @@ namespace lamiapizzeriastatic.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("la_mia_pizzeria_static.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("categoryes");
+                });
+
             modelBuilder.Entity("la_mia_pizzeria_static.Models.Pizza", b =>
                 {
                     b.Property<int>("Id")
@@ -32,7 +49,7 @@ namespace lamiapizzeriastatic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategorId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -53,7 +70,20 @@ namespace lamiapizzeriastatic.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("pizze");
+                });
+
+            modelBuilder.Entity("la_mia_pizzeria_static.Models.Pizza", b =>
+                {
+                    b.HasOne("la_mia_pizzeria_static.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

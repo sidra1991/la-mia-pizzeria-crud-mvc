@@ -2,6 +2,7 @@
 using la_mia_pizzeria_static.Models;
 using la_mia_pizzeria_static.Models.Forms;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.SqlServer.Server;
@@ -61,9 +62,8 @@ namespace la_mia_pizzeria_static.Controllers
                 return View(PiCa);
             }
 
-            Pizza pizza = PiCa.Pizza;
-            pizza.Category = db.categoryes.Where(category => category.Id == pizza.CategorId).FirstOrDefault();
-            db.pizze.Add(pizza);
+
+            db.pizze.Add(PiCa.Pizza);
             db.SaveChanges();
 
             return RedirectToAction("Index");
@@ -90,7 +90,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return View();
             }
 
-            Pizza pizza = db.pizze.Where(post => post.Id == id).FirstOrDefault();
+            Pizza pizza = db.pizze.Where(post => post.Id == id).Include("Category").FirstOrDefault();
 
             if (pizza == null)
             {

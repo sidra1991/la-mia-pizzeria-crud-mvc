@@ -6,17 +6,22 @@
 
 @{
     Layout = "_Layout";
+    int index = 1;
 }
 
 <form asp-controller="Pizza" asp-action="create" method="post">
 
-        <div class="mb-3">
-            @foreach (var item in Model.categories)
-            {
-               <input type="radio" id="" name="category" value="@item.Id"> <span> @item.Name </span>
-            }
+    <select asp-for="Pizza.CategoryId" rows="10">
+        @foreach (Category category in Model.categories)
+        {
+            if(index > 1 ){
 
-        </div>
+                <option value="@category.Id">@category.Name</option>
+            }
+            index++;
+        }
+    </select>
+
 
         <div class="mb-3">
             <label for="Immage" class="form-label">Immagine</label>

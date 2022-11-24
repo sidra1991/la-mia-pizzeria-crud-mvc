@@ -22,8 +22,8 @@ namespace la_mia_pizzeria_static.Models
         [Range(1, 10, ErrorMessage = "il prezzo non è valido")]
         public int Price { get; set; }
         [Required(ErrorMessage = "Il campo è obbligatorio")]
-        public int CategorId { get; set; }
-        public Category? Category { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
 
         public Pizza()
         {
@@ -31,7 +31,7 @@ namespace la_mia_pizzeria_static.Models
         }
         public Pizza(string name, string imageAddress, string description, int price, int CategoryId)
         {
-            CategorId = CategoryId;
+            this.CategoryId = CategoryId;
             Name = name;
             ImageAddress = imageAddress;
             Description = description;
