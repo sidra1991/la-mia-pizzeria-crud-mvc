@@ -1,16 +1,16 @@
-﻿using la_mia_pizzeria_static.data;
+﻿using la_mia_pizzeria_static.Controllers.Repository;
+using la_mia_pizzeria_static.data;
 using la_mia_pizzeria_static.Models;
 using Microsoft.AspNetCore.Mvc;
-using static la_mia_pizzeria_static.Controllers.Repository.DbCenter;
 
 namespace la_mia_pizzeria_static.Controllers
 {
     public class CategoryController : Controller
     {
-        DbPostRepository db;
+        DbPizzaRepository db;
         public CategoryController() : base()
         {
-            db = new DbPostRepository();
+            db = new DbPizzaRepository();
         } 
 
         //index

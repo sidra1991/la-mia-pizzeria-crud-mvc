@@ -1,16 +1,17 @@
-﻿using la_mia_pizzeria_static.data;
+﻿using la_mia_pizzeria_static.Controllers.Repository;
+using la_mia_pizzeria_static.data;
 using la_mia_pizzeria_static.Models;
 using Microsoft.AspNetCore.Mvc;
-using static la_mia_pizzeria_static.Controllers.Repository.DbCenter;
+
 
 namespace la_mia_pizzeria_static.Controllers
 {
     public class IngredientController : Controller
     {
-        DbPostRepository db;
+        DbPizzaRepository db;
         public IngredientController() : base()
         {
-            db = new DbPostRepository();
+            db = new DbPizzaRepository();
         }
 
         //index
@@ -63,7 +64,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return NotFound();
             }
 
-            db.Thisingredient(id).Name = ingredients.Name;
+            db.ThisIngredient(id).Name = ingredients.Name;
             db.Save();
 
             return RedirectToAction("Indexingred");
@@ -73,12 +74,12 @@ namespace la_mia_pizzeria_static.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            if (db.Thisingredient(id) == null)
+            if (db.ThisIngredient(id) == null)
             {
                 return NotFound();
             }
 
-            db.RemoveIngredient(db.Thisingredient(id));
+            db.RemoveIngredient(db.ThisIngredient(id));
             db.Save();
 
 

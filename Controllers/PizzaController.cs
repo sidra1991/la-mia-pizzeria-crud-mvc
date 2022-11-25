@@ -1,4 +1,5 @@
 ﻿using Azure;
+using la_mia_pizzeria_static.Controllers.Repository;
 using la_mia_pizzeria_static.data;
 using la_mia_pizzeria_static.Models;
 using la_mia_pizzeria_static.Models.Forms;
@@ -8,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.SqlServer.Server;
-using static la_mia_pizzeria_static.Controllers.Repository.DbCenter;
 using Ingredient = la_mia_pizzeria_static.Models.Ingredient;
 
 namespace la_mia_pizzeria_static.Controllers
@@ -16,11 +16,11 @@ namespace la_mia_pizzeria_static.Controllers
     public class PizzaController : Controller
     {
 
-        DbPostRepository repository;
+        DbPizzaRepository repository;
 
         public PizzaController() : base()
         {
-            repository = new DbPostRepository();
+            repository = new DbPizzaRepository();
         }
 
 
@@ -69,7 +69,7 @@ namespace la_mia_pizzeria_static.Controllers
                 List<Ingredient> Ingredients = repository.ListIngredient();
                 foreach (Ingredient ingr in Ingredients)
                 {
-                    forms.Ingredients.Add(repository.ingredient(ingr.Id));
+                    forms.Ingredients.Add(repository.ThisIngredient(ingr.Id));
                 }
 
                 return View(forms);
@@ -79,7 +79,7 @@ namespace la_mia_pizzeria_static.Controllers
 
             foreach (int ing in forms.SelectIngredient)
             {
-                forms.Pizza.Ingredients.Add(repository.ingredient(ing));
+                forms.Pizza.Ingredients.Add(repository.ThisIngredient(ing));
             }
 
 
@@ -108,7 +108,7 @@ namespace la_mia_pizzeria_static.Controllers
 
             foreach (Ingredient ingr in Ingredients)
             {
-                Ingredient ingredient = repository.ingredient(ingr.Id);
+                Ingredient ingredient = repository.ThisIngredient(ingr.Id);
                 forms.Ingredients.Add(ingredient);
             }
 
@@ -128,7 +128,7 @@ namespace la_mia_pizzeria_static.Controllers
 
                 foreach (Ingredient ingr in Ingredients)
                 {
-                    Ingredient ingredient = repository.ingredient(ingr.Id);
+                    Ingredient ingredient = repository.ThisIngredient(ingr.Id);
                     forms.Ingredients.Add(ingredient);
                 }
                 return View();
@@ -149,7 +149,7 @@ namespace la_mia_pizzeria_static.Controllers
 
             foreach (int ing in forms.SelectIngredient)
             {
-                Ingredient ingred = repository.ingredient(ing);
+                Ingredient ingred = repository.ThisIngredient(ing);
                 forms.Pizza.Ingredients.Add(ingred);
             }
 
