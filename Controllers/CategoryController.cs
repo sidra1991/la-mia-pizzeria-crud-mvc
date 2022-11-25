@@ -39,10 +39,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return View();
             }
 
-            Category NewCategory = category;
-
-            db.AddCategory(NewCategory);
-            db.Save();
+            db.AddCategory(category);
 
             return RedirectToAction("Index");
         }
@@ -64,10 +61,8 @@ namespace la_mia_pizzeria_static.Controllers
                 return NotFound();
             }
 
-            db.ThisCategory(id).Name = category.Name;
+            db.UpdateCategory(id,category);
 
-
-            db.Save();
 
             return RedirectToAction("Index");
         }
@@ -84,8 +79,8 @@ namespace la_mia_pizzeria_static.Controllers
                 return NotFound();
             }
 
-            db.RemoveCategory(db.ThisCategory(id));
-            db.Save();
+            db.RemoveCategory(id);
+
 
 
             return RedirectToAction("Index");

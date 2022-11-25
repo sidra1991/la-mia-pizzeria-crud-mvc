@@ -73,17 +73,15 @@ namespace la_mia_pizzeria_static.Controllers
                 return View(forms);
             }
 
-            forms.Pizza.Ingredients = new List<Ingredient>();
+            List<Ingredient> ingredients = new List<Ingredient>();
 
             foreach (int ing in forms.SelectIngredient)
             {
-                forms.Pizza.Ingredients.Add(repository.ThisIngredient(ing));
+                ingredients.Add(repository.ThisIngredient(ing));
             }
 
 
-            repository.AddPizza(forms.Pizza);
-            repository.Save();
-
+            repository.AddPizza(forms, ingredients);
             return RedirectToAction("Index");
         }
 
@@ -139,19 +137,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return NotFound();
             }
 
-            pizza.Name = forms.Pizza.Name;
-            pizza.Description = forms.Pizza.Description;
-            pizza.ImageAddress = forms.Pizza.ImageAddress;
-            pizza.Price = forms.Pizza.Price;
-            forms.Pizza.Ingredients = new List<Ingredient>();
-
-            foreach (int ing in forms.SelectIngredient)
-            {
-                Ingredient ingred = repository.ThisIngredient(ing);
-                forms.Pizza.Ingredients.Add(ingred);
-            }
-
-            repository.Save();
+            repository.UploadPizza(forms);
 
             return RedirectToAction("Index");
         }
@@ -170,8 +156,6 @@ namespace la_mia_pizzeria_static.Controllers
             }
 
             repository.RemovePizza(pizza);
-            repository.Save();
-
 
             return RedirectToAction("Index");
         }

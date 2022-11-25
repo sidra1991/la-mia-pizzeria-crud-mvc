@@ -1,5 +1,6 @@
 ﻿using la_mia_pizzeria_static.data;
 using la_mia_pizzeria_static.Models;
+using la_mia_pizzeria_static.Models.Forms;
 
 namespace la_mia_pizzeria_static.Controllers.Repository
 {
@@ -24,13 +25,39 @@ namespace la_mia_pizzeria_static.Controllers.Repository
         {
             return Pizzas.ToList();
         }
-        public void AddPizza(Pizza pizza)
+        public void AddPizza(PizzaForm forms, List<Ingredient> ingredients)
         {
-            Pizzas.Add(pizza);
+            Pizza newPizza = forms.Pizza;
+            newPizza.Category = ThisCategory(forms.Pizza.CategoryId);
+            newPizza.Ingredients = new();
+            foreach (var item in forms.Ingredients)
+            {
+                newPizza.Ingredients.Add(item);
+            }
+            newPizza.CategoryId = forms.Pizza.CategoryId;
+            Pizzas.Add(newPizza);
         }
         public void RemovePizza(Pizza pizza)
         {
             Pizzas.Remove(pizza);
+        }
+        public void UploadPizza(PizzaForm forms)
+        {
+            Pizza uploadPizza = TihisPizza(forms.Pizza.Id);
+            uploadPizza.Ingredients = new List<Ingredient>();
+
+            foreach (int ing in forms.SelectIngredient)
+            {
+                uploadPizza.Ingredients.Add(ThisIngredient(ing));
+            }
+            uploadPizza.Name = forms.Pizza.Name;
+            uploadPizza.Description = forms.Pizza.Description;
+            uploadPizza.ImageAddress = forms.Pizza.ImageAddress;
+            uploadPizza.Price = forms.Pizza.Price;
+            uploadPizza.Category = forms.Pizza.Category;
+            uploadPizza.CategoryId = forms.Pizza.CategoryId;
+            Pizzas.Remove(forms.Pizza);
+            Pizzas.Add(uploadPizza);
         }
 
 
@@ -47,10 +74,16 @@ namespace la_mia_pizzeria_static.Controllers.Repository
         {
             Ingredients.Add(ingredient);
         }
-        public void RemoveIngredient(Ingredient ingredient)
+        public void RemoveIngredient(int id)
         {
-            Ingredients.Remove(ingredient);
+            Ingredients.Remove(ThisIngredient(id));
         }
+        public void UpdateIngredient(int id, Ingredient ingredient)
+        {
+            ThisIngredient(id).Name = ingredient.Name;
+        }
+
+
 
         //funzioni DB per category
         public Category ThisCategory(int id)
@@ -65,13 +98,13 @@ namespace la_mia_pizzeria_static.Controllers.Repository
         {
             Categories.Add(category);
         }
-        public void RemoveCategory(Category category)
+        public void RemoveCategory(int id)
         {
-            Categories.Remove(category);
+            Categories.Remove(ThisCategory(id));
         }
-        public void Save()
+        public void UpdateCategory(int id, Category category)
         {
-            //db.SaveChanges();
+            ThisCategory(category.Id).Name = category.Name;
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using la_mia_pizzeria_static.data;
 using la_mia_pizzeria_static.Models;
+using la_mia_pizzeria_static.Models.Forms;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.SqlServer.Server;
 using static la_mia_pizzeria_static.Controllers.Repository.DbPizzaRepository;
 
 namespace la_mia_pizzeria_static.Controllers.Repository
@@ -24,13 +26,42 @@ namespace la_mia_pizzeria_static.Controllers.Repository
         {
             return db.Pizze.ToList();
         }
-        public void AddPizza(Pizza pizza)
+        public void AddPizza(PizzaForm forms , List<Ingredient> ingredients)
         {
-            db.Pizze.Add(pizza);
+            Pizza newPizza = forms.Pizza;
+            newPizza.Category = ThisCategory(forms.Pizza.CategoryId);
+            newPizza.Ingredients = new();
+            foreach (var item in ingredients)
+            {
+                newPizza.Ingredients.Add(item);
+            }
+            newPizza.CategoryId = forms.Pizza.CategoryId;
+            db.Pizze.Add(newPizza);
+            db.SaveChanges();
         }
         public void RemovePizza(Pizza pizza)
         {
+            
             db.Pizze.Remove(pizza);
+            db.SaveChanges();
+        }
+        public void UploadPizza(PizzaForm forms)
+        {
+            Pizza uploadPizza = TihisPizza(forms.Pizza.Id);
+            uploadPizza.Ingredients = new List<Ingredient>();
+
+            foreach (int ing in forms.SelectIngredient)
+            {
+                uploadPizza.Ingredients.Add(ThisIngredient(ing));
+            }
+            uploadPizza.Name = forms.Pizza.Name;
+            uploadPizza.Description = forms.Pizza.Description;
+            uploadPizza.ImageAddress = forms.Pizza.ImageAddress;
+            uploadPizza.Price = forms.Pizza.Price;
+            uploadPizza.Category = forms.Pizza.Category;
+            uploadPizza.CategoryId = forms.Pizza.CategoryId;
+            db.Pizze.Update(uploadPizza); 
+            db.SaveChanges();
         }
 
 
@@ -46,10 +77,17 @@ namespace la_mia_pizzeria_static.Controllers.Repository
         public void AddIngredient(Ingredient ingredient)
         {
             db.Ingredientes.Add(ingredient);
+            db.SaveChanges();
         }
-        public void RemoveIngredient(Ingredient ingredient)
+        public void RemoveIngredient(int id)
         {
-            db.Ingredientes.Remove(ingredient);
+            db.Ingredientes.Remove(ThisIngredient(id));
+            db.SaveChanges();
+        }
+        public void UpdateIngredient(int id,Ingredient ingredient)
+        {
+            ThisIngredient(id).Name = ingredient.Name;
+            db.SaveChanges();
         }
 
         //funzioni DB per category
@@ -64,13 +102,17 @@ namespace la_mia_pizzeria_static.Controllers.Repository
         public void AddCategory(Category category)
         {
             db.Categoryes.Add(category);
+            db.SaveChanges();
         }
-        public void RemoveCategory(Category category)
+        public void UpdateCategory(int id,Category category)
         {
-            db.Categoryes.Remove(category);
+            ThisCategory(id).Name = category.Name;
+            db.SaveChanges();
+
         }
-        public void Save()
+        public void RemoveCategory(int id)
         {
+            db.Categoryes.Remove(ThisCategory(id));
             db.SaveChanges();
         }
 

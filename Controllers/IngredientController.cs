@@ -32,17 +32,14 @@ namespace la_mia_pizzeria_static.Controllers
         //si occupa di creare un nuovo ingrediente
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Ingredient ingredients)
+        public IActionResult Create(Ingredient ingredient)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
 
-            Ingredient Newingredients = ingredients;
-
-            db.AddIngredient(Newingredients);
-            db.Save();
+            db.AddIngredient(ingredient);
 
             return RedirectToAction("Indexingred");
         }
@@ -64,8 +61,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return NotFound();
             }
 
-            db.ThisIngredient(id).Name = ingredients.Name;
-            db.Save();
+            db.UpdateIngredient( id, ingredients);
 
             return RedirectToAction("Indexingred");
         }
@@ -79,9 +75,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return NotFound();
             }
 
-            db.RemoveIngredient(db.ThisIngredient(id));
-            db.Save();
-
+            db.RemoveIngredient(id);
 
             return RedirectToAction("Indexingred");
         }
