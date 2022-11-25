@@ -7,10 +7,11 @@ namespace la_mia_pizzeria_static.Controllers
 {
     public class CategoryController : Controller
     {
-        DbPizzaRepository db;
-        public CategoryController() : base()
+
+        InerfacePizzaRepository db;
+        public CategoryController(InerfacePizzaRepository _repository) : base()
         {
-            db = new DbPizzaRepository();
+            db = _repository;
         } 
 
         //index

@@ -8,10 +8,10 @@ namespace la_mia_pizzeria_static.Controllers
 {
     public class IngredientController : Controller
     {
-        DbPizzaRepository db;
-        public IngredientController() : base()
+        InerfacePizzaRepository db;
+        public IngredientController(InerfacePizzaRepository _repository) : base()
         {
-            db = new DbPizzaRepository();
+            db = _repository;
         }
 
         //index

@@ -16,11 +16,10 @@ namespace la_mia_pizzeria_static.Controllers
     public class PizzaController : Controller
     {
 
-        DbPizzaRepository repository;
-
-        public PizzaController() : base()
+        InerfacePizzaRepository repository;
+        public PizzaController(InerfacePizzaRepository _repository) : base()
         {
-            repository = new DbPizzaRepository();
+            repository = _repository;
         }
 
 
@@ -29,7 +28,6 @@ namespace la_mia_pizzeria_static.Controllers
         // restituisce la view index con la lista delle pizze nel DB
         public IActionResult Index()
         {
-            List<Pizza> pizzaList;
             if(repository.ListPizze().Count > 0) {
                 return View(repository.ListPizze());
             }
