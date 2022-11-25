@@ -30,6 +30,10 @@ namespace la_mia_pizzeria_static.Controllers.Repository
             {
                 return db.Pizze.ToList();
             }
+            public Category ThisCategory(int id)
+            {
+                return db.Categoryes.Where(post => post.Id == id).FirstOrDefault();
+            }
             public List<Ingredient> ListIngredient()
             {
                 return db.Ingredientes.ToList();
@@ -42,9 +46,17 @@ namespace la_mia_pizzeria_static.Controllers.Repository
             {
                 db.Pizze.Add(pizza);
             }
+            public void AddCategory(Category category)
+            {
+                db.Categoryes.Add(category);
+            }
             public void RemovePizza(Pizza pizza)
             {
                 db.Pizze.Remove(pizza);
+            }
+            public void RemoveCategory(Category category)
+            {
+                db.Categoryes.Remove(category);
             }
             public void Save()
             {

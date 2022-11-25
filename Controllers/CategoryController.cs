@@ -1,36 +1,34 @@
 ﻿using la_mia_pizzeria_static.data;
 using la_mia_pizzeria_static.Models;
 using Microsoft.AspNetCore.Mvc;
+using static la_mia_pizzeria_static.Controllers.Repository.DbCenter;
 
 namespace la_mia_pizzeria_static.Controllers
 {
     public class CategoryController : Controller
     {
-        PizzaDB db;
+        DbPostRepository db;
         public CategoryController() : base()
         {
-            db = new PizzaDB();
-        }
+            db = new DbPostRepository();
+        } 
+
+        //index
+        //si occupa ri restituire la listadelle categorie in fase di gestione di queste
         public IActionResult Index()
         {
-            if (db.Categoryes.ToList().Count > 0)
+            if (db.ListCategory().Count > 0)
             {
-                List<Category> categoryes = db.Categoryes.ToList();
-                return View("Index", categoryes);
+                return View("Index", db.ListCategory());
             }
-            else
-            {
-                List<Category> categoryes = new List<Category>();
-                return View("Index", categoryes);
+            else 
+            { 
+                return View("Index", new List<Category>());
             }
         }
 
-        public IActionResult Create()
-        {
-
-            return View();
-        }
-
+        //create
+        //si occupa di creare una nuova categoria
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Category category)
@@ -42,13 +40,14 @@ namespace la_mia_pizzeria_static.Controllers
 
             Category NewCategory = category;
 
-            db.Categoryes.Add(NewCategory);
-            db.SaveChanges();
+            db.AddCategory(NewCategory);
+            db.Save();
 
             return RedirectToAction("Index");
         }
 
-
+        //update
+        //si occupa di modificare il nome di una categoria
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Update(int id, Category category)
@@ -59,7 +58,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return View("Index");
             }
 
-            Category Newcategory = db.Categoryes.Where(post => post.Id == id).FirstOrDefault();
+            Category Newcategory = db.ThisCategory(id);
 
             if (category == null)
             {
@@ -69,24 +68,27 @@ namespace la_mia_pizzeria_static.Controllers
             Newcategory.Name = category.Name;
 
 
-            db.SaveChanges();
+            db.Save();
 
             return RedirectToAction("Index");
         }
 
+
+        //delete
+        //si occupa di eliminare una categoria
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            Category category = db.Categoryes.Where(cat => cat.Id == id).FirstOrDefault();
+            Category category = db.ThisCategory(id);
 
             if (category == null)
             {
                 return NotFound();
             }
 
-            db.Categoryes.Remove(category);
-            db.SaveChanges();
+            db.RemoveCategory(category);
+            db.Save();
 
 
             return RedirectToAction("Index");
