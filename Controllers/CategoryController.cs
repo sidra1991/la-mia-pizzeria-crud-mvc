@@ -58,14 +58,12 @@ namespace la_mia_pizzeria_static.Controllers
                 return View("Index");
             }
 
-            Category Newcategory = db.ThisCategory(id);
-
             if (category == null)
             {
                 return NotFound();
             }
 
-            Newcategory.Name = category.Name;
+            db.ThisCategory(id).Name = category.Name;
 
 
             db.Save();
@@ -80,14 +78,12 @@ namespace la_mia_pizzeria_static.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            Category category = db.ThisCategory(id);
-
-            if (category == null)
+            if (db.ThisCategory(id) == null)
             {
                 return NotFound();
             }
 
-            db.RemoveCategory(category);
+            db.RemoveCategory(db.ThisCategory(id));
             db.Save();
 
 

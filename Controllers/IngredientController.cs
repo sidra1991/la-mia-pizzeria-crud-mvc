@@ -1,36 +1,34 @@
 ﻿using la_mia_pizzeria_static.data;
 using la_mia_pizzeria_static.Models;
 using Microsoft.AspNetCore.Mvc;
+using static la_mia_pizzeria_static.Controllers.Repository.DbCenter;
 
 namespace la_mia_pizzeria_static.Controllers
 {
     public class IngredientController : Controller
     {
-        PizzaDB db;
+        DbPostRepository db;
         public IngredientController() : base()
         {
-            db = new PizzaDB();
+            db = new DbPostRepository();
         }
+
+        //index
+        //restituisce una lista di ingredienti in fase di gestione 
         public IActionResult Indexingred()
         {
-            if (db.Ingredientes.ToList().Count > 0)
+            if (db.ListIngredient().Count > 0)
             {
-                List<Ingredient> ingredients = db.Ingredientes.ToList();
-                return View("Indexingred", ingredients);
+                return View(db.ListIngredient());
             }
             else
             {
-                List<Ingredient> ingredients = new List<Ingredient>();
-                return View("Indexingred", ingredients);
+                return View(new List<Ingredient>());
             }
         }
 
-        public IActionResult Create()
-        {
-
-            return View();
-        }
-
+        //create
+        //si occupa di creare un nuovo ingrediente
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Ingredient ingredients)
@@ -42,13 +40,14 @@ namespace la_mia_pizzeria_static.Controllers
 
             Ingredient Newingredients = ingredients;
 
-            db.Ingredientes.Add(Newingredients);
-            db.SaveChanges();
+            db.AddIngredient(Newingredients);
+            db.Save();
 
             return RedirectToAction("Indexingred");
         }
 
-
+        //update
+        //si occupa di modificare un ingrediente
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Update(int id, Ingredient ingredients)
@@ -59,17 +58,13 @@ namespace la_mia_pizzeria_static.Controllers
                 return View("Indexingred");
             }
 
-            Ingredient Newingredients = db.Ingredientes.Where(ing => ing.Id == id).FirstOrDefault();
-
             if (ingredients == null)
             {
                 return NotFound();
             }
 
-            Newingredients.Name = ingredients.Name;
-
-
-            db.SaveChanges();
+            db.Thisingredient(id).Name = ingredients.Name;
+            db.Save();
 
             return RedirectToAction("Indexingred");
         }
@@ -78,15 +73,13 @@ namespace la_mia_pizzeria_static.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            Ingredient ingredients = db.Ingredientes.Where(cat => cat.Id == id).FirstOrDefault();
-
-            if (ingredients == null)
+            if (db.Thisingredient(id) == null)
             {
                 return NotFound();
             }
 
-            db.Ingredientes.Remove(ingredients);
-            db.SaveChanges();
+            db.RemoveIngredient(db.Thisingredient(id));
+            db.Save();
 
 
             return RedirectToAction("Indexingred");

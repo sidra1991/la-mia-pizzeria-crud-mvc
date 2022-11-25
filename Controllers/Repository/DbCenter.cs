@@ -18,41 +18,60 @@ namespace la_mia_pizzeria_static.Controllers.Repository
             }
 
 
+            //funzioni DB per pizza
             public Pizza TihisPizza(int id)
             {
                 return db.Pizze.Where(Pizza => Pizza.Id == id).Include("Category").Include("Ingredients").FirstOrDefault();
-            }
-            public Ingredient ingredient(int id)
-            {
-                return db.Ingredientes.Where(i => i.Id == id).FirstOrDefault();
             }
             public List<Pizza> ListPizze()
             {
                 return db.Pizze.ToList();
             }
-            public Category ThisCategory(int id)
+            public void AddPizza(Pizza pizza)
             {
-                return db.Categoryes.Where(post => post.Id == id).FirstOrDefault();
+                db.Pizze.Add(pizza);
+            }
+            public void RemovePizza(Pizza pizza)
+            {
+                db.Pizze.Remove(pizza);
+            }
+
+
+            //funzioni DB per ingredienti
+            public Ingredient ingredient(int id)
+            {
+                return db.Ingredientes.Where(i => i.Id == id).FirstOrDefault();
             }
             public List<Ingredient> ListIngredient()
             {
                 return db.Ingredientes.ToList();
             }
+            public void AddIngredient(Ingredient ingredient)
+            {
+                db.Ingredientes.Add(ingredient);
+            }
+            public void RemoveIngredient(Ingredient ingredient)
+            {
+                db.Ingredientes.Remove(ingredient);
+            }
+            public Ingredient Thisingredient(int id)
+            {
+                return db.Ingredientes.Where(ingr => ingr.Id == id).Include("Pizzas").FirstOrDefault();
+            }
+
+
+            //funzioni DB per category
+            public Category ThisCategory(int id)
+            {
+                return db.Categoryes.Where(post => post.Id == id).FirstOrDefault();
+            }
             public List<Category> ListCategory()
             {
                 return db.Categoryes.ToList();
             }
-            public void AddPizza(Pizza pizza)
-            {
-                db.Pizze.Add(pizza);
-            }
             public void AddCategory(Category category)
             {
                 db.Categoryes.Add(category);
-            }
-            public void RemovePizza(Pizza pizza)
-            {
-                db.Pizze.Remove(pizza);
             }
             public void RemoveCategory(Category category)
             {
