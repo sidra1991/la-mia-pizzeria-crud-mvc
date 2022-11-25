@@ -48,16 +48,6 @@ namespace la_mia_pizzeria_static.Controllers
             return RedirectToAction("Index");
         }
 
-        //public IActionResult Update(int id)
-        //{
-        //    Category category = db.Categoryes.Where(categor => categor.Id == id).FirstOrDefault();
-
-        //    if (category == null)
-        //        return NotFound();
-
-
-        //    return ActionResult("Update", category);
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]

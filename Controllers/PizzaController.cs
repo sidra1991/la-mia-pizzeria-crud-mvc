@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.SqlServer.Server;
+using static la_mia_pizzeria_static.Controllers.Repository.DbCenter;
 using Ingredient = la_mia_pizzeria_static.Models.Ingredient;
 
 namespace la_mia_pizzeria_static.Controllers
@@ -15,73 +16,60 @@ namespace la_mia_pizzeria_static.Controllers
     public class PizzaController : Controller
     {
 
-        PizzaDB db;
+        DbPostRepository repository;
 
         public PizzaController() : base()
         {
-            db = new PizzaDB();
+            repository = new DbPostRepository();
         }
 
 
+
+        // index
+        // restituisce la view index con la lista delle pizze nel DB
         public IActionResult Index()
         {
-            if(db.Pizze.ToList().Count > 0) {
-                List<Pizza> pizzaList = db.Pizze.ToList();
-                return View("Index", pizzaList);
+            List<Pizza> pizzaList;
+            if(repository.ListPizze().Count > 0) {
+                return View(repository.ListPizze());
             }
             else
             {
-                List<Pizza> pizzaList = new List<Pizza>();
-                return View("Index", pizzaList);
+                return View( new List<Pizza>());
             }
-            
-            
         }
 
+        //show
+        // si occupa di fornire i dettagli delle pizze
         public IActionResult Show(int id)
         {
-            Pizza pizza = db.Pizze.Where(Pizza => Pizza.Id == id).Include("Category").Include("Ingredients").FirstOrDefault();
-
-            return View(pizza);
+            return View(repository.TihisPizza(id));
         }
 
+        //crerate
+        //2 funzioni
+        // si occupa di creare una nuova pizza nel DB
         public IActionResult Create()
         {
             PizzaForm forms = new PizzaForm();  
             forms.Pizza = new Pizza();
-            forms.Categories = db.Categoryes.ToList();
-            forms.Ingredients = db.Ingredientes.ToList();
-            //forms.Ingredients = new List<SelectListItem>();
-
-
-            //List<Ingredient> Ingredients = db.Ingredientes.ToList();
-
-            //foreach (Ingredient ingr in Ingredients)
-            //{
-            //    Ingredient ingredient = (Ingredient)db.Ingredientes.Where(i => i.Id == ingr.Id);
-            //    forms.Ingredients.Add(ingredient);
-            //}
-
-
+            forms.Categories = repository.ListCategory();
+            forms.Ingredients = repository.ListIngredient();
 
             return View("Create",forms);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(PizzaForm forms)
         {
             if (!ModelState.IsValid)
             {
-                forms.Categories = db.Categoryes.ToList();
+                forms.Categories = repository.ListCategory();
                 forms.Ingredients = new List<Ingredient>();
-
-                List<Ingredient> Ingredients = db.Ingredientes.ToList();
-
+                List<Ingredient> Ingredients = repository.ListIngredient();
                 foreach (Ingredient ingr in Ingredients)
                 {
-                    Ingredient ingredient = db.Ingredientes.Where(i => i.Id == ingr.Id).FirstOrDefault();
-                    forms.Ingredients.Add(ingredient);
+                    forms.Ingredients.Add(repository.ingredient(ingr.Id));
                 }
 
                 return View(forms);
@@ -91,41 +79,41 @@ namespace la_mia_pizzeria_static.Controllers
 
             foreach (int ing in forms.SelectIngredient)
             {
-                Ingredient ingred = db.Ingredientes.Where(i => i.Id == ing).FirstOrDefault();
-                forms.Pizza.Ingredients.Add(ingred);
+                forms.Pizza.Ingredients.Add(repository.ingredient(ing));
             }
 
 
-            db.Pizze.Add(forms.Pizza);
-            db.SaveChanges();
+            repository.AddPizza(forms.Pizza);
+            repository.Save();
 
             return RedirectToAction("Index");
         }
 
+        //update
+        // 2 funzioni
+        // si occupa di modificare i dati nel DB riguardo una pizza
         public IActionResult Update(int id)
         {
-            Pizza pizza = db.Pizze.Where(Pizza => Pizza.Id == id).FirstOrDefault();
+            Pizza pizza = repository.TihisPizza(id);
 
             if (pizza == null)
                 return NotFound();
 
             PizzaForm forms = new();
             forms.Pizza = pizza;
-            forms.Categories = db.Categoryes.ToList();
+            forms.Categories = repository.ListCategory();
             forms.Ingredients = new List<Ingredient>();
 
-            List<Ingredient> Ingredients = db.Ingredientes.ToList();
+            List<Ingredient> Ingredients = repository.ListIngredient();
 
             foreach (Ingredient ingr in Ingredients)
             {
-                Ingredient ingredient = db.Ingredientes.Where(i => i.Id == ingr.Id).FirstOrDefault();
+                Ingredient ingredient = repository.ingredient(ingr.Id);
                 forms.Ingredients.Add(ingredient);
             }
 
-
             return View("Update", pizza );
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Update(int id, PizzaForm forms)
@@ -133,20 +121,20 @@ namespace la_mia_pizzeria_static.Controllers
 
             if (!ModelState.IsValid)
             {
-                forms.Categories = db.Categoryes.ToList();
+                forms.Categories = repository.ListCategory();
                 forms.Ingredients = new List<Ingredient>();
 
-                List<Ingredient> Ingredients = db.Ingredientes.ToList();
+                List<Ingredient> Ingredients = repository.ListIngredient();
 
                 foreach (Ingredient ingr in Ingredients)
                 {
-                    Ingredient ingredient = db.Ingredientes.Where(i => i.Id == ingr.Id).FirstOrDefault();
+                    Ingredient ingredient = repository.ingredient(ingr.Id);
                     forms.Ingredients.Add(ingredient);
                 }
                 return View();
             }
 
-            Pizza pizza = db.Pizze.Where(post => post.Id == id).Include("Category").FirstOrDefault();
+            Pizza pizza = repository.TihisPizza(id);
 
             if (pizza == null)
             {
@@ -161,28 +149,30 @@ namespace la_mia_pizzeria_static.Controllers
 
             foreach (int ing in forms.SelectIngredient)
             {
-                Ingredient ingred = db.Ingredientes.Where(i => i.Id == ing).FirstOrDefault();
+                Ingredient ingred = repository.ingredient(ing);
                 forms.Pizza.Ingredients.Add(ingred);
             }
 
-            db.SaveChanges();
+            repository.Save();
 
             return RedirectToAction("Index");
         }
 
+        //delete
+        //elimina una pizza daL DB
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            Pizza pizza = db.Pizze.Where(piz => piz.Id == id).FirstOrDefault();
+            Pizza pizza = repository.TihisPizza(id);
 
             if (pizza == null)
             {
                 return NotFound();
             }
 
-            db.Pizze.Remove(pizza);
-            db.SaveChanges();
+            repository.RemovePizza(pizza);
+            repository.Save();
 
 
             return RedirectToAction("Index");
